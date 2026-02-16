@@ -16,7 +16,7 @@ let food = {
 x: Math.floor(Math.random() * columns),
 y: Math.floor(Math.random() * rows)
 }
-
+let speed = 250
 
 ctx.fillStyle = "green"
 
@@ -26,25 +26,19 @@ for(let i=0;i<snake.length;i++){
 }
 
 function restartGame(){
-
     snake = [
         {x:10,y:10},
         {x:9,y:10},
         {x:8,y:10}
     ]
-
     direction = "RIGHT"
-
     count = 0
-
+    speed = 250
     document.getElementById("score").innerText = count
-
     restart.style.visibility = "hidden"
-
     interval = setInterval(() => {
         update(snake)
-    }, 200)
-
+    }, speed)
 }
 
 
@@ -75,6 +69,16 @@ function update(arr){
 
     count++
     document.getElementById("score").innerText = count
+
+    //speed control
+    if(count%3 === 0 && count !== 0 && speed >= 60){
+    speed -= 20
+    clearInterval(interval)
+    interval = setInterval(() => {
+        update(snake)
+    }, speed)
+
+    }
 
     // generate safe food
     let valid = false
@@ -141,7 +145,7 @@ function update(arr){
 
 let interval = setInterval(() => {
     update(snake)
-}, 200);
+}, speed);
 
 document.addEventListener("keydown",(event)=>{
     if (event.key === "ArrowUp" && direction !== "DOWN"){
