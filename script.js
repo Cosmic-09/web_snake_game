@@ -1,3 +1,4 @@
+const restart = document.getElementById("restart")
 const canvas = document.getElementById("snakegame");
 const ctx = canvas.getContext("2d");
 const scale = 20;
@@ -11,11 +12,9 @@ let snake = [
  {x:8,y:10}
 ]
 let direction = "RIGHT"
-
-
 let food = {
-    x: Math.floor(Math.random() * columns),
-    y: Math.floor(Math.random() * rows)
+x: Math.floor(Math.random() * columns),
+y: Math.floor(Math.random() * rows)
 }
 
 
@@ -25,6 +24,29 @@ ctx.fillStyle = "green"
 for(let i=0;i<snake.length;i++){
     ctx.fillRect(snake[i].x * scale,snake[i].y * scale,20,20)
 }
+
+function restartGame(){
+
+    snake = [
+        {x:10,y:10},
+        {x:9,y:10},
+        {x:8,y:10}
+    ]
+
+    direction = "RIGHT"
+
+    count = 0
+
+    document.getElementById("score").innerText = count
+
+    restart.style.visibility = "hidden"
+
+    interval = setInterval(() => {
+        update(snake)
+    }, 200)
+
+}
+
 
 function update(arr){
 
@@ -50,12 +72,31 @@ function update(arr){
     
     //food eaten
     if(newHead.x === food.x && newHead.y === food.y){
+
+    count++
+    document.getElementById("score").innerText = count
+
+    // generate safe food
+    let valid = false
+
+    while(!valid){
+
         food = {
-        x: Math.floor(Math.random() * columns),
-        y: Math.floor(Math.random() * rows)
+            x: Math.floor(Math.random() * columns),
+            y: Math.floor(Math.random() * rows)
         }
-        count++
-        document.getElementById("score").innerText = count
+
+        valid = true
+
+        for(let i=0;i<arr.length;i++){
+            if(food.x === arr[i].x && food.y === arr[i].y){
+                valid = false
+                break
+            }
+        }
+
+    }
+
     }
     else{
         arr.pop()
@@ -63,7 +104,9 @@ function update(arr){
     //self collition
     for(let i = 1;i<arr.length;i++){
         if(newHead.x === arr[i].x && newHead.y === arr[i].y){
-            alert("hello")
+            clearInterval(interval)
+            restart.style.visibility = "visible"
+            restart.addEventListener("click",restartGame)
         }
     }
     //wall collition
@@ -72,11 +115,14 @@ function update(arr){
         newHead.x >= columns||
         newHead.y >= rows
     ){
-        alert("hello")
+        clearInterval(interval)
+        restart.style.visibility = "visible"
+        restart.addEventListener("click",restartGame)
     }
 
-    ctx.fillStyle = "white"
+    ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
+
 
     ctx.fillStyle = "red"
     ctx.fillRect(food.x * scale, food.y * scale, scale, scale)
@@ -93,7 +139,7 @@ function update(arr){
 }
 
 
-setInterval(() => {
+let interval = setInterval(() => {
     update(snake)
 }, 200);
 

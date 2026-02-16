@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <style>
         *{
             padding: 0;
@@ -18,18 +19,34 @@
             background-color: #252222;
         }
         canvas {
+            position: relative;
             border: 1px solid #979797;
             background-color: #000000;
+            margin-top: 100px;
         }
         div{
+            position: absolute;
+            top: -20px;
+            left: 540px;
             margin: 50px;
             color: white;
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        #restart{
+            position: absolute;
+            visibility: hidden;
+            height: 75px;
+            width: 150px;
+            font-size: 30px;
         }
     </style>
 </head>
 <body>
-    <div><h1>score : <samp id="score">1</samp></h1></div>
-    <canvas id="snakegame" height="400" width="400"></canvas>
+    <div><h1>score : <span id="score">0</span></h1></div>
+    <canvas id="snakegame" height="500" width="1000"></canvas>
+    <button id="restart" class="btn btn-primary">restart</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
