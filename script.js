@@ -16,7 +16,9 @@ let food = {
 x: Math.floor(Math.random() * columns),
 y: Math.floor(Math.random() * rows)
 }
-let speed = 250
+let basespeed = 250
+let speed = basespeed
+let pause = false
 
 ctx.fillStyle = "green"
 
@@ -26,6 +28,7 @@ for(let i=0;i<snake.length;i++){
 }
 
 function restartGame(){
+    clearInterval(interval)
     snake = [
         {x:10,y:10},
         {x:9,y:10},
@@ -33,12 +36,26 @@ function restartGame(){
     ]
     direction = "RIGHT"
     count = 0
-    speed = 250
+    speed = basespeed
     document.getElementById("score").innerText = count
     restart.style.visibility = "hidden"
     interval = setInterval(() => {
         update(snake)
     }, speed)
+}
+
+function togglePause(){
+
+    if(!pause){
+        clearInterval(interval)
+        pause = true
+    }
+    else{
+        interval = setInterval(() => {
+            update(snake)
+        }, speed)
+        pause = false
+    }
 }
 
 
@@ -71,7 +88,7 @@ function update(arr){
     document.getElementById("score").innerText = count
 
     //speed control
-    if(count%3 === 0 && count !== 0 && speed >= 60){
+    if(count%4 === 0 && count !== 0 && speed >= 60){
     speed -= 20
     clearInterval(interval)
     interval = setInterval(() => {
@@ -124,6 +141,8 @@ function update(arr){
         restart.addEventListener("click",restartGame)
     }
 
+
+
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -159,5 +178,8 @@ document.addEventListener("keydown",(event)=>{
     }
     else if (event.key === "ArrowRight" && direction !== "LEFT"){
         direction = "RIGHT"
+    }
+    else if(event.key === " "){
+        togglePause()
     }
 })
