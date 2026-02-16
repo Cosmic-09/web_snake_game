@@ -4,6 +4,7 @@ const scale = 20;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
+let count = 0
 let snake = [
  {x:10,y:10},
  {x:9,y:10},
@@ -12,8 +13,13 @@ let snake = [
 let direction = "RIGHT"
 
 
+let food = {
+    x: Math.floor(Math.random() * columns),
+    y: Math.floor(Math.random() * rows)
+}
 
-ctx.fillStyle = "black"
+
+ctx.fillStyle = "green"
 
 
 for(let i=0;i<snake.length;i++){
@@ -41,12 +47,41 @@ function update(arr){
     }
 
     arr.unshift(newHead)
-    arr.pop()
+    
+    //food eaten
+    if(newHead.x === food.x && newHead.y === food.y){
+        food = {
+        x: Math.floor(Math.random() * columns),
+        y: Math.floor(Math.random() * rows)
+        }
+        count++
+        document.getElementById("score").innerText = count
+    }
+    else{
+        arr.pop()
+    }
+    //self collition
+    for(let i = 1;i<arr.length;i++){
+        if(newHead.x === arr[i].x && newHead.y === arr[i].y){
+            alert("hello")
+        }
+    }
+    //wall collition
+    if( newHead.x === -1||
+        newHead.y === -1||
+        newHead.x >= columns||
+        newHead.y >= rows
+    ){
+        alert("hello")
+    }
 
     ctx.fillStyle = "white"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    ctx.fillStyle = "black"
+    ctx.fillStyle = "red"
+    ctx.fillRect(food.x * scale, food.y * scale, scale, scale)
+
+    ctx.fillStyle = "green"
     for(let i=0;i<arr.length;i++){
         ctx.fillRect(
             arr[i].x * scale,

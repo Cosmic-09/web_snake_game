@@ -13,16 +13,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #252222;
         }
         canvas {
-            border: 1px solid #000;
-            background-color: #fff;
+            border: 1px solid #979797;
+            background-color: #000000;
+        }
+        div{
+            margin: 50px;
+            color: white;
         }
     </style>
 </head>
 <body>
+    <div><h1>score : <samp id="score">1</samp></h1></div>
     <canvas id="snakegame" height="400" width="400"></canvas>
     <script src="script.js"></script>
 </body>
