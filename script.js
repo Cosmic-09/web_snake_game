@@ -228,10 +228,12 @@ function handleSwipe(){
 
     let dx = touchEndX - touchStartX
     let dy = touchEndY - touchStartY
-    let min = 30
 
 
-    if(Math.abs(dx) > Math.abs(dy)){
+    if(dx === 0 && dy === 0){
+        togglePause()
+    }
+    else if(Math.abs(dx) > Math.abs(dy)){
         if(dx > 0  && direction !=="LEFT"){
             direction = "RIGHT"
         }
