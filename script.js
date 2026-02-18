@@ -228,9 +228,10 @@ function handleSwipe(){
 
     let dx = touchEndX - touchStartX
     let dy = touchEndY - touchStartY
+    let min = 10
 
 
-    if(dx === 0 && dy === 0){
+    if(Math.abs(dx) < min && Math.abs(dy) < min){
         togglePause()
     }
     else if(Math.abs(dx) > Math.abs(dy)){
