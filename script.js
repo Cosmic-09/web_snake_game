@@ -4,7 +4,8 @@ const ctx = canvas.getContext("2d");
 const scale = 20;
 let rows;
 let columns;
-
+let touchStartX,touchEndX
+let touchStartY,touchEndY
 let count = 0
 let snake = [
  {x:10,y:10},
@@ -15,6 +16,7 @@ let direction = "RIGHT"
 let basespeed = 250
 let speed = basespeed
 let pause = false
+let food
 
 function draw(){
     ctx.fillStyle = "green"
@@ -35,11 +37,16 @@ function resizeCanvas(){
 
 
     draw()
+
+    food = {
+    x: Math.floor(Math.random() * columns),
+    y: Math.floor(Math.random() * rows)
+}
 }
 
 resizeCanvas()
 window.addEventListener("resize",resizeCanvas)
-let food = {
+food = {
 x: Math.floor(Math.random() * columns),
 y: Math.floor(Math.random() * rows)
 }
@@ -204,3 +211,41 @@ document.addEventListener("keydown",(event)=>{
         togglePause()
     }
 })
+
+canvas.addEventListener("touchstart",(e) => {
+    touchStartX = e.touches[0].clientX
+    touchStartY = e.touches[0].clientY
+})
+
+canvas.addEventListener("touchend",(e)=>{
+    touchEndX =e.changedTouches[0].clientX
+    touchEndY =e.changedTouches[0].clientY
+
+    console.log(handleSwipe());
+})
+
+function handleSwipe(){
+
+    let dx = touchEndX - touchStartX
+    let dy = touchEndY - touchStartY
+    let min = 30
+
+
+    if(Math.abs(dx) > Math.abs(dy)){
+        if(dx > 0  && direction !=="LEFT"){
+            direction = "RIGHT"
+        }
+        else if(dx < 0 && direction !== "RIGHT"){
+            direction = "LEFT"
+        }
+    }
+    else{
+        if(dy < 0 && direction !== "DOWN"){
+            direction = "UP"
+        }
+        else if(dy > 0 && direction !== "UP"){
+            direction = "DOWN"
+        }
+    }
+}
+
