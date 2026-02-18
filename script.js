@@ -2,8 +2,8 @@ const restart = document.getElementById("restart")
 const canvas = document.getElementById("snakegame");
 const ctx = canvas.getContext("2d");
 const scale = 20;
-const rows = canvas.height / scale;
-const columns = canvas.width / scale;
+let rows;
+let columns;
 
 let count = 0
 let snake = [
@@ -12,20 +12,39 @@ let snake = [
  {x:8,y:10}
 ]
 let direction = "RIGHT"
-let food = {
-x: Math.floor(Math.random() * columns),
-y: Math.floor(Math.random() * rows)
-}
 let basespeed = 250
 let speed = basespeed
 let pause = false
 
-ctx.fillStyle = "green"
-
-
-for(let i=0;i<snake.length;i++){
-    ctx.fillRect(snake[i].x * scale,snake[i].y * scale,20,20)
+function draw(){
+    ctx.fillStyle = "green"
+    for(let i=0;i<snake.length;i++){
+        ctx.fillRect(snake[i].x * scale,snake[i].y * scale,scale,scale)
+    }
 }
+
+function resizeCanvas(){
+    const width = window.innerWidth*0.9
+    const height = window.innerHeight*0.8
+
+    rows = Math.floor(height / scale);
+    columns = Math.floor(width / scale);
+
+    canvas.width = columns*scale
+    canvas.height = rows*scale
+
+
+    draw()
+}
+
+resizeCanvas()
+window.addEventListener("resize",resizeCanvas)
+let food = {
+x: Math.floor(Math.random() * columns),
+y: Math.floor(Math.random() * rows)
+}
+
+
 
 function restartGame(){
     clearInterval(interval)
@@ -39,6 +58,7 @@ function restartGame(){
     speed = basespeed
     document.getElementById("score").innerText = count
     restart.style.visibility = "hidden"
+    clearInterval(interval)
     interval = setInterval(() => {
         update(snake)
     }, speed)
@@ -51,6 +71,7 @@ function togglePause(){
         pause = true
     }
     else{
+        clearInterval(interval)
         interval = setInterval(() => {
             update(snake)
         }, speed)
